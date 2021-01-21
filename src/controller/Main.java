@@ -4,24 +4,24 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Main {
-    public static void main(String args[])
+    public static void main(String[] args)
     {
-        int iArr[] = {3, 673, 106, 45, 2,23 };
+        int[] iArr = {3, 673, 106, 45, 2,23 };
         ArrayList<String> sortedList = radixSort(iArr);
         printList(sortedList);
     }
     static void printList(ArrayList<String> list ){
-        for (int i = 0; i < list.size(); i++) {
-            System.out.println(list.get(i));
+        for (String s : list) {
+            System.out.println(s);
         }
     }
     static ArrayList<String> toStringArray(int[] iArr){
-        ArrayList<String> list = new ArrayList<String>();
+        ArrayList<String> list = new ArrayList<>();
         int maxValue = 0;
-        for (int i = 0; i < iArr.length; i++) {
-            list.add(iArr[i]+"");
-            if(iArr[i]>maxValue){
-                maxValue=iArr[i];
+        for (int j : iArr) {
+            list.add(j + "");
+            if (j > maxValue) {
+                maxValue = j;
             }
         }
         return add0ToStrings(list, maxValue+"");
@@ -29,11 +29,11 @@ public class Main {
     static ArrayList<String> add0ToStrings(ArrayList<String> list, String maxValue){
         int lenghtString = maxValue.length();
         for (int i = 0; i < list.size(); i++) {
-           String elementAtI = list.get(i);
+           StringBuilder elementAtI = new StringBuilder(list.get(i));
            while(elementAtI.length() != lenghtString){
-               elementAtI = "0" + elementAtI;
+               elementAtI.insert(0, "0");
            }
-           list.set(i,elementAtI);
+           list.set(i, elementAtI.toString());
         }
         return list;
     }
@@ -49,21 +49,19 @@ public class Main {
     static HashMap<Integer, ArrayList<String>> insertToHashMap(ArrayList<String> list, int iteration){
         HashMap<Integer, ArrayList<String>> hashMap = initHashMap();
         int indexToCheck = list.get(0).length()-1-iteration;
-        for (int i = 0; i < list.size(); i++) {
-            int value = Character.getNumericValue(list.get(i).charAt(indexToCheck));
+        for (String s : list) {
+            int value = Character.getNumericValue(s.charAt(indexToCheck));
             ArrayList<String> listAtIndex = hashMap.get(value);
-            listAtIndex.add(list.get(i));
-            hashMap.put(value,listAtIndex);
+            listAtIndex.add(s);
+            hashMap.put(value, listAtIndex);
         }
         return hashMap;
     }
     static ArrayList<String> hashMapToList(HashMap<Integer, ArrayList<String>> hashMap){
-        ArrayList<String> list = new ArrayList<String>();
+        ArrayList<String> list = new ArrayList<>();
         for (int i = 0; i < 9; i++) {
             ArrayList<String> iterationList = hashMap.get(i);
-            for (int j = 0; j < iterationList.size(); j++) {
-                list.add(iterationList.get(j));
-            }
+            list.addAll(iterationList);
         }
         return list;
     }
